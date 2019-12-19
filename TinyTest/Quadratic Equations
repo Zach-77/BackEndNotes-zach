@@ -1,0 +1,68 @@
+import javax.sound.midi.SysexMessage;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class Calculate {
+
+    public static void main(String[] args) {
+        double a, b, c, x1, x2;
+        String refresh;
+
+        while (true) {
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("请分别输入a b c的值：");
+            a = scanner.nextDouble();
+            b = scanner.nextDouble();
+            c = scanner.nextDouble();
+
+//          计算delta
+            Double delta = b * b - 4 * a * c;
+            x1 = (-b + Math.sqrt(delta)) / (2 * a);
+            x2 = (-b - Math.sqrt(delta)) / (2 * a);
+
+            if (delta == 0) {
+                System.out.println("两个相等实根：x1=x2=" + x1);
+            }
+
+            if (delta > 0) {
+                System.out.println("两个不相等实根：x1=" + x1 + ",x2=" + x2);
+            }
+
+            else {
+                System.out.println("无实根，两个虚根：x1=" + -b / 2 * a + "+" + Math.sqrt(-delta) / (2 * a) + "j, x2=" + -b / 2 * a + "-" + Math.sqrt(-delta) / (2 * a) + "j");
+            }
+
+
+//            判断是否继续计算
+            System.out.println("是否计算新方程的根？(yes/no)");
+            refresh = scanner.next();
+            System.out.println();
+
+            if (refresh.equals("yes")) {
+                System.out.println();
+                System.out.println("---------新的计算--------");
+            }
+
+            else if (refresh.equals("no")) {
+                break;
+            }
+
+            else {
+                System.out.println("输入错误，3s后即将退出！");
+                try {
+                        Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        System.exit(0);
+                    }
+        }
+    }
+}
+
+
+
+
+
