@@ -1,0 +1,95 @@
+题目链接 <a href="https://pintia.cn/problem-sets/1169812488801005568/problems/1174508790318862336"> 01-复杂度1 最大子列和问题</a>
+
+<h1 style="text-align:center">解法1 分治算法:</h1>
+<br>
+#include <stdio.h>
+
+int maxSumRec(int a[],int left,int right);
+int maxOf3(int a ,int b ,int c);
+//分治计算左，右，中子序列
+	int maxSumRec(int a[],int left,int right){
+	int i=0;
+		
+		if(left == right){
+			if(a[left] > 0) return a[left];
+			else return 0;
+		}	   
+		int mid =(left+right)/2;
+		
+		//左右子序列		
+		int leftMax = maxSumRec(a,left,mid);
+		int rightMax = maxSumRec(a,mid+1,right);
+
+		//中间往左移子序列	
+		int leftNum = 0;
+		int leftCenterSum = 0;
+		for(i=mid;i>=left;i--){
+			leftNum += a[i];
+			if(leftNum > leftCenterSum) leftCenterSum = leftNum;
+		}
+		
+		//中间往右子序列
+		int rightNum = 0;
+		int rightCenterSum = 0;
+		for(i=mid+1;i<=right;i++){
+			rightNum += a[i];
+			if(rightNum > rightCenterSum) rightCenterSum = rightNum;
+		}
+		
+		int middleSum = rightCenterSum+leftCenterSum;
+		return maxOf3(leftMax,rightMax,middleSum);
+		
+	}
+
+int maxOf3(int a ,int b ,int c){
+	int max;
+	if(a>b) max=a;
+	else    max=b;
+	if(a>c)	max=a;
+	else max=c;
+	if(b>c) max=b;
+	else max=c;
+	return max;
+}
+
+int main(){
+	int i=0,n=0;
+	int sum;
+	int maxsum;
+
+	printf("%d",maxSumRec(num,0,n-1));
+}
+<br>
+<br>
+<br>
+<h1 style="text-align:center">解法2 子序列和:</h1>
+<br>
+#include <stdio.h>
+
+int main(){
+	int i=0;
+ 	int n=0;
+	scanf("%d",&n);
+	int num[n];
+	
+	//printf("输出为：%d\n",i);
+	for(i=0;i<n;i++){
+	    scanf("%d",&num[i]);
+	}	
+
+	//计算最大子列和
+	int Maxsum=0;
+	int sum=0;
+	int a[2],b[2];
+	for(i=0;i<n;i++){
+
+  int Maxsum=0;
+	int sum=0;
+	for(i=0;i<n;i++){
+	    if(sum < 0) sum=0;  
+	    sum += num[i];
+	    if(sum > Maxsum) Maxsum=sum;
+	}
+	printf("%d",Maxsum);		   	
+}
+
