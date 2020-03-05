@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+int main(){
+	int i=0;
+ 	int n=0;
+	scanf("%d",&n);
+	int num[n];
+	
+	//printf("输出为：%d\n",i);
+	for(i=0;i<n;i++){
+	    scanf("%d",&num[i]);
+
+	}
+	
+	//计算最大子列和，此外还有相应的序列号范围。
+	int Maxsum=0;
+	int sum=0;
+	int a[2]={-1,-1},b[2]={-1,-1};
+	for(i=0;i<n;i++){
+
+	if(num[i]>0 && a[0] == -1) a[0]=i;  
+  
+	sum += num[i];
+
+	if(sum < 0) {sum=0; a[0]=-1; }
+  	 
+        if(sum > Maxsum) {Maxsum=sum ; a[1]=i; b[0] = a[0];b[1]=a[1]; }
+        }
+        
+printf("%d %d %d",Maxsum,b[0],b[1]);
+
+
+		
+	   	
+}
+
