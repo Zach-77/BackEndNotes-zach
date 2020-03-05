@@ -1,7 +1,4 @@
-题目链接 <a href="https://pintia.cn/problem-sets/1169812488801005568/problems/1174508790318862336"> 01-复杂度1 最大子列和问题</a>
-
-<h1 style="text-align:center">解法1 分治算法:</h1>
-<br>
+解法1 分治算法:
 #include <stdio.h>
 
 int maxSumRec(int a[],int left,int right);
@@ -59,11 +56,11 @@ int main(){
 
 	printf("%d",maxSumRec(num,0,n-1));
 }
-<br>
-<br>
-<br>
-<h1 style="text-align:center">解法2 子序列和:</h1>
-<br>
+
+
+
+解法2 子序列和:
+
 #include <stdio.h>
 
 int main(){
