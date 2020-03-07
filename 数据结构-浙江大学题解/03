@@ -1,0 +1,171 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct PolyNode *Polynomial;
+
+Polynomial InputPoly();
+void Attach(int a,int b,Polynomial *pRear);
+Polynomial PMult(Polynomial P1,Polynomial P2i);
+Polynomial PAdd(Polynomial P1,Polynomial P2);
+void PrintPoly(Polynomial P);
+
+struct PolyNode{
+	int coeff;
+	int expon;
+     Polynomial link;
+};
+
+int main(){
+	Polynomial P1,P2,PM,PA;
+	P1=InputPoly();
+	P2=InputPoly();
+	printf("\n");
+	//测试是否正确输入
+	printf("-----检测输入------\n");
+	PrintPoly(P1);
+	printf("\n");
+	PrintPoly(P2);
+	printf("\n");
+
+	//乘法
+	printf("------相乘---------\n");
+	PM=PMult(P1,P2);
+	PrintPoly(PM);
+	printf("\n");
+
+	//加法
+	printf("---------相加---------\n");
+	PA=PAdd(P1,P2);
+	PrintPoly(PA);
+	return 0;
+}
+//Input the polynomial
+Polynomial InputPoly(){
+	int n,e,f;
+	Polynomial P,Rear,temp;
+	P = (Polynomial)malloc(sizeof(struct PolyNode));
+	P->link=NULL;
+	Rear = P;
+	scanf("%d",&n);
+	while(n--){
+		scanf("%d %d",&e,&f);
+		Attach(e,f,&Rear);
+	}
+	temp = P;P=P->link;free(temp);
+	return P;
+} 
+
+//Attach the polynomial
+void Attach(int a,int b,Polynomial *pRear){
+	Polynomial P;
+	P = (Polynomial)malloc(sizeof(struct PolyNode));
+
+	P->coeff = a;
+	P->expon = b;
+	P->link = NULL;
+	(*pRear)->link = P;
+	(*pRear) = P;
+}
+
+
+//多项式加法
+Polynomial PAdd(Polynomial P1,Polynomial P2){
+	Polynomial P,Rear,a,b;
+	a = P1;
+	b = P2;
+	P =(Polynomial)malloc(sizeof(struct PolyNode));
+	P->link = NULL;
+	Rear = P;
+	while(a && b){
+		if(a->expon == b->expon){
+			Attach(a->coeff + b->coeff,a->expon,&Rear);
+			a = a->link;
+			b = b->link;
+		}
+		else if(a->expon > b->expon){
+			Attach(a->coeff,a->expon,&Rear);
+			a = a->link;
+		}
+		else{
+			Attach(b->coeff,b->expon,&Rear);
+			b = b->link;
+		}
+	}	
+	while(a){
+		Attach(a->coeff,a->expon,&Rear);
+		a = a->link;
+	}	
+	while(b){
+		Attach(b->coeff,b->expon,&Rear);
+		b = b->link;
+	}
+	Rear = P;
+	P = P->link;
+	free(Rear);//释放Rear;
+	return P;	
+		
+	}
+
+//多项式乘法
+Polynomial PMult(Polynomial P1,Polynomial P2){
+	Polynomial P,Rear,a,b,temp;
+	int c,e;
+
+	if(!P1||!P2) return NULL;
+
+	P = (Polynomial)malloc(sizeof(struct PolyNode));
+	P->link=NULL;
+	Rear =P;
+	a = P1;
+	b = P2;
+	if(a){
+		while(b){
+			Attach(a->coeff*b->coeff,a->expon+b->expon,&Rear);
+			b = b->link;	   
+		}
+	}
+		a = a->link;
+		while(a){
+			b = P2;Rear= P;  
+			while(b){
+				c = a->coeff*b->coeff;
+				e = a->expon+b->expon;
+
+				while(Rear->link && Rear->link->expon > e){
+					Rear = Rear->link;
+				}
+				if(Rear->link && Rear->link->expon == e){
+					if(Rear->link->coeff+c)				
+			  	  		Rear->link->coeff +=c;
+					else{
+						temp = Rear->link;
+						Rear->link=temp->link;
+						free(temp);
+					}
+				}
+				else{
+					temp=Rear->link;
+					Attach(c,e,&Rear);
+					Rear->link = temp;
+				}
+				b = b->link;
+			}
+			a = a->link;
+		}
+		b = P;P=P->link;free(b);
+		return P;
+	}
+
+//打印多项式
+void PrintPoly(Polynomial P){
+	int flag = 0;
+	if(P==NULL){
+	printf("0 0\n");
+	return;
+	}
+	while(P){
+		if(!flag) flag = 1;
+		else printf(" ");
+		printf("%d %d",P->coeff,P->expon);
+		P = P->link;
+	}
+}
