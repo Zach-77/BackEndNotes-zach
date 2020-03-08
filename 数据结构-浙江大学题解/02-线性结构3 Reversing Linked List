@@ -1,0 +1,151 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct LinkNode *LNode; 
+
+void PrintList1(LNode *P);
+void PrintList(LNode P);
+LNode reverseLink(LNode linkHead,int K);
+
+struct LinkNode{
+	int addr;
+	int data;
+	int nextAddr;
+	LNode nextNode;
+} LN;
+
+int main(){
+	int Data[100000];
+	int Next[100000];
+	int num;
+	int N;
+	int head;
+	int i,temp,K;
+
+	LN.addr=1;
+	LN.data=666;
+	LN.nextAddr=2;
+	LN.nextNode=NULL;
+	LNode t=&LN;
+	
+
+//	sleep(30);
+//输入初始数据
+	scanf("%d %d %d",&head,&num,&K);
+
+	/*输入初始地址,元素个数,和反转数K*/
+	struct LinkNode node[num+1];
+	node[0].nextAddr=head;
+	for(i=1;i<num+1;i++){
+		scanf("%d",&temp);
+		scanf("%d %d",&Data[temp],&Next[temp]);
+		}
+	
+	 i=1;
+     //构建单链表
+	while(1){
+	if(node[i-1].nextAddr==-1){
+		node[i-1].nextNode=NULL;
+		N=i-1;
+		break;
+	}
+	node[i].addr=node[i-1].nextAddr;
+	node[i].data=Data[node[i].addr];
+	node[i].nextAddr=Next[node[i].addr];
+	node[i-1].nextNode=node+i;
+//	printf("node[i]:%d  % d %d\n",node[i].addr,node[i].data,node[i].nextAddr);
+	i++;
+
+	}	
+
+
+/*	另一种方法思路：构建单链表；
+ *	while(next[temp]){
+	   Attach(data[temp],next[temp],temp,*Node);
+	   temp=next[temp];
+			 
+	   }
+		   
+	   Attach(int addr,int data,int nextAddr,*LNode node){
+		   LNode P;
+		   P = (LNode)malloc(sizeof(struct LinkNode));
+		   P->nextNode=NULL;
+		   P->addr=addr;
+		   P->data=data;
+		   P->nextAddr=nextAddr;
+		   (*node)->nextNode=P;
+	   }
+*/	
+
+
+
+
+//反向排序后
+
+//先进行K=1判断，然后进行反排
+	LNode p=node;
+	if(K==1){
+	PrintList(p);
+	}
+	else if(K<=N){
+		for(i=0;i<(N/K);i++){
+		p=reverseLink(p,K);
+		}
+		PrintList(&node[0]);
+	return 0;
+	}
+	
+	
+}
+
+LNode reverseLink(LNode linkHead,int K){
+	LNode head,new,old,temp,p;
+	int cir=1;
+	int j=0;
+
+	//防止节点数小于K时误操作
+	p=linkHead;
+	while(j<K-1){
+	if(p->nextNode == NULL){
+		return NULL;
+	}
+	p = p->nextNode;
+	j++;
+	}
+
+	head=linkHead;
+	new=head->nextNode;
+	old=new->nextNode;
+	while(cir<K){   
+		temp=old->nextNode;
+		old->nextNode=new;
+		old->nextAddr=new->addr;
+		
+		new=old;
+		old=temp;
+		cir++;	   
+	}
+	head->nextNode->nextNode=old;
+	if(old != NULL){
+		head->nextNode->nextAddr=old->addr;
+	}
+	else head->nextNode->nextAddr=-1;
+	
+	LNode nextStart=head->nextNode;
+	head->nextNode=new;
+	head->nextAddr=new->addr;
+	return nextStart;
+}
+
+void PrintList(LNode P){
+	LNode p1 =P->nextNode;
+	while(p1){
+	if(p1->nextAddr !=-1){	
+	printf("%05d %d %05d\n",p1->addr,p1->data,p1->nextAddr);
+	}
+	else{ printf("%05d %d %d\n",p1->addr,p1->data,p1->nextAddr);	 } 
+	p1=p1->nextNode;
+	}
+
+}
+
