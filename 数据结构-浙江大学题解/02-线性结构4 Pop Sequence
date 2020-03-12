@@ -1,0 +1,88 @@
+package PTA;
+
+import javax.lang.model.element.NestingKind;
+import java.awt.event.MouseAdapter;
+import java.util.Scanner;
+import java.util.Stack;
+
+public class PTA_05 {
+    public static void main(String[] args) throws InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        int M = scanner.nextInt();
+        int N = scanner.nextInt();
+        int K = scanner.nextInt();
+        scanner.nextLine();
+        // System.out.println(M + " "+N+" " + K);
+        int i;
+        String[] data = new String[K];
+        String[] out = new String[K];
+        PTA_05 p1 = new PTA_05();
+
+        //输入数据并校验
+        for (i = 0; i < K; i++) {
+            data[i] = scanner.nextLine();
+            String[] temp = data[i].split(" ");
+
+            if(temp.length != N){
+                System.out.println("错误！请输入正确格式");
+                Thread.sleep(5000);
+                System.exit(0);
+            }
+
+            int[] num = new int[N];
+            int j;
+
+            for (j = 0; j < N; j++) {
+                num[j] = Integer.parseInt(temp[j]);
+            }
+            out[i]=p1.stack4Check(M,num,N);   //保存结果
+        }
+
+        //打印校验结果
+        for (String s : out) {
+            System.out.println(s);
+        }
+    }
+
+    /*检查函数
+     *@param capacity
+     *@param num
+     *@param Max
+     * */
+    public String stack4Check(int capacity, int[] num, int Max) {
+
+        int i=1;
+        int p = 1;
+        Stack<Integer> stack = new Stack<>();
+
+        int n = num.length;
+
+            while (i<=n && p<= Max) {
+                if (stack.size() !=0 && stack.peek() == num[i-1]) {
+                    stack.pop();
+                    i++;
+                }
+                stack.push(p);
+                p++;
+                if (stack.size() > capacity) return "NO";
+            }
+            
+            
+            /*一种更复杂的方法
+            for (i = 1; i <= n; i++) {
+            while (p<=Max) {
+                if (stack.size() !=0 && stack.peek() == num[i-1]) {
+                    stack.pop();
+                    break;
+                }
+                stack.push(p);
+                p++;
+                if (stack.size() > capacity) return "NO";
+            }
+            p++;
+        }
+*/
+        return "YES";
+    }
+
+}
