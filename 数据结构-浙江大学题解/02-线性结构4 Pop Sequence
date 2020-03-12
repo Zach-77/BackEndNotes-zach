@@ -81,7 +81,8 @@ public class PTA_05 {
             }
             p++;
         }
-*/
+        */
+        
         return "YES";
     }
 
