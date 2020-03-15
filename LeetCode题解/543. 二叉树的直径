@@ -1,0 +1,39 @@
+### 解题思路
+此处撰写解题思路
+递归思想，在递归中加入了计算，简化了规程
+### 代码
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int max=0;
+    public int diameterOfBinaryTree(TreeNode root) {
+        if(root==null) return 0;
+        treeHeight(root);
+        return max;
+    }
+
+    public int treeHeight(TreeNode root){
+        if(root == null){
+            return -1;
+        }
+        int left=treeHeight(root.left);
+        int right=treeHeight(root.right);
+        root.val = left+right+2;
+        if(max<root.val) max=root.val;
+        return 1+select(left,right);
+    }
+
+     public int select(int a,int b){
+        return a>b?a:b;
+    }
+}
+```
